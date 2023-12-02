@@ -3,15 +3,23 @@
 ## installation Guide
 
 1. Install all package
-```yarn```
+```
+yarn
+```
 
 2. Run development server
-```yarn dev```
+```
+yarn dev
+```
 
 3. Build and publish executable program
 
 - macOS
-```yarn run build:mac```
+```
+yarn run build:mac
+```
 
-- window
-```yarn run build:win```
+- Windows
+```
+yarn run build:win
+```
