@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Logo from "./assets/logo.jpg";
+import Message from "./Message";
 
 const time = [
   {
@@ -15,30 +16,36 @@ const time = [
     value: "01"
   },
   {
-    label: "15 min",
-    value: "15",
+    label: "45 min",
+    value: "45",
   },
   {
-    label: "30 min",
-    value: "30",
+    label: "60 min",
+    value: "60",
   },
 ];
 
 const maximumKill = [
   {
-    label: "15 kill",
-    value: 15,
+    label: "1 kill",
+    value: 1,
   },
   {
-    label: "30 kill",
-    value: 30,
+    label: "50 kills",
+    value: 50,
+  },
+  {
+    label: "30 kills",
+    value: 70,
   },
 ];
 function App() {
   const [second, setSecond] = useState("00");
-  const [minute, setMinute] = useState("15");
+  const [minute, setMinute] = useState("45");
   const [p1, setP1] = useState(0);
   const [p2, setP2] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [complete, setComplete] = useState(true);
   const [max, setMax] = useState(15);
   const [toggle, setToggle] = useState(true);
@@ -48,18 +55,24 @@ function App() {
   function handleReset() {
     window.location.reload()
   }
+  function resetScore(){
+    setP1(0);
+    setP2(0);
+  }
   useEffect(() => {
     if (p1 === max || p2 === max) {
-      let message;
       if (p1 === max) {
-        message = toggle ? 'blue win' : 'red win';
-        alert(message);
+        setMessage(toggle ? 'blue win' : 'red win');
+        setOpen(true);
       }
       else if (p2 === max) {
-        message = toggle ? 'red win' : 'blue win';
-        alert(message);
+        setMessage(toggle ? 'red win' : 'blue win');
+        setOpen(true);
       }
+      setSecond("00");
+      setMinute("45");
       setComplete(true);
+      resetScore();
     }
   }, [p1, p2]);
   useEffect(() => {
@@ -75,7 +88,15 @@ function App() {
         if (parseInt(second) === 0) {
           if (parseInt(minute) === 0) {
             setComplete(true);
-            setMinute("15")
+            if (p1 > p2){
+              setMessage(toggle ? 'blue win' : 'red win');
+            }
+            else if (p2 > p1) {
+              setMessage(toggle ? 'red win' : 'blue win');
+            }
+            resetScore();
+            setOpen(true);
+            setMinute("45");
             clearInterval(interval);
 
           } else {
@@ -129,7 +150,7 @@ function App() {
           <Stack direction={"row"} spacing={2}>
             <TextField
               select
-              defaultValue={"15"}
+              defaultValue={"45"}
               sx={{ bgcolor: "white" }}
               onChange={(event) => {
                 setMinute(event.target.value);
@@ -141,7 +162,7 @@ function App() {
             </TextField>
             <TextField
               select
-              defaultValue={15}
+              defaultValue={50}
               sx={{ bgcolor: "white" }}
               onChange={(event) => {
                 setMax(parseInt(event.target.value));
@@ -187,6 +208,7 @@ function App() {
           </Stack>
         )}
       </Stack>
+      <Message open={open} handleClose={() => {setOpen(false)}} message={message}/>
     </Stack>
   );
 }
