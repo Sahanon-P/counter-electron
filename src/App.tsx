@@ -10,12 +10,16 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Logo from "./assets/logo.jpg";
+import Laser from "./assets/laser.mp3";
 import Message from "./Message";
-
 const time = [
   {
-    label: "1 min",
-    value: "01",
+    label: "15 min",
+    value: "15",
+  },
+  {
+    label: "30 min",
+    value: "30",
   },
   {
     label: "45 min",
@@ -29,8 +33,12 @@ const time = [
 
 const maximumKill = [
   {
-    label: "1 kill",
-    value: 1,
+    label: "30 kill",
+    value: 30,
+  },
+  {
+    label: "40 kill",
+    value: 40,
   },
   {
     label: "50 kills",
@@ -227,11 +235,15 @@ function App() {
               tabIndex={0}
               onKeyUp={(event) => {
                 if (event.key === "Enter") {
-                  event.preventDefault();
-                  setP1(p1 + 1);
+                  setTimeout(() => {
+                    new Audio(Laser).play()
+                    setP1(p1 +1);
+                  }, 1000)
                 } else if (event.key === "Spacebar" || event.key === " ") {
-                  event.preventDefault();
-                  setP2(p2 + 1);
+                  setTimeout(() => {
+                    setP2(p2 +1);
+                    new Audio(Laser).play()
+                  }, 1000)
                 }
               }}
             >
